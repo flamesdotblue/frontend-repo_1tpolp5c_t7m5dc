@@ -1,143 +1,229 @@
-import React, { useMemo, useState } from 'react';
-import HeroCover from './components/HeroCover';
-import FiltersBar from './components/FiltersBar';
-import TrendsGrid from './components/TrendsGrid';
-import Recommendations from './components/Recommendations';
+import React, { useMemo, useRef, useState } from 'react';
+import HeroCover from './components/HeroCover.jsx';
+import FiltersBar from './components/FiltersBar.jsx';
+import TrendsGrid from './components/TrendsGrid.jsx';
+import Recommendations from './components/Recommendations.jsx';
 
 function useDemoData() {
   const trends = [
     {
       id: 't1',
-      name: 'Cherry Red Maxi Dress',
-      source: 'Fashion Week AW',
-      category: 'Dresses',
-      colors: ['red', 'crimson'],
-      tags: ['maxi', 'evening', 'satin'],
-      strength: 0.86,
-      velocity: 0.73,
-      affinity: 'Gen Z • NA/EU',
-      engagement: 1280000,
-      platform: 'TikTok views',
-      sparkline: [12, 14, 13, 16, 18, 22, 24, 28, 31, 35],
+      name: 'Satin Slip Dresses',
+      strength: 92,
+      velocity: 'fast',
+      affinity: 78,
+      history: [48, 52, 57, 63, 66, 70, 68, 72, 79, 84, 90, 92],
+      cohorts: ['Gen Z Women', 'City Professionals', 'Event-goers'],
+      keywords: ['satin', 'slip', 'midi', 'evening', 'occasion'],
+      category: 'dresses',
+      palette: 'rose',
     },
     {
       id: 't2',
-      name: 'Oversized Blazer + Mini Skirt',
-      source: 'Influencer Lookbook',
-      category: 'Outerwear',
-      colors: ['black', 'charcoal'],
-      tags: ['tailored', '90s', 'layering'],
-      strength: 0.78,
-      velocity: 0.81,
-      affinity: 'Millennial • EU',
-      engagement: 940000,
-      platform: 'IG engagements',
-      sparkline: [8, 10, 9, 12, 14, 15, 19, 23, 25, 30],
+      name: 'Cropped Blazers',
+      strength: 86,
+      velocity: 'rising',
+      affinity: 74,
+      history: [30, 33, 35, 40, 44, 50, 55, 61, 66, 73, 80, 86],
+      cohorts: ['Early Adopters', 'Workwear Lovers'],
+      keywords: ['blazer', 'cropped', 'tailored', 'power look'],
+      category: 'outerwear',
+      palette: 'neutrals',
     },
     {
       id: 't3',
-      name: 'Chunky Dad Sneakers',
-      source: 'TikTok Hashtags',
-      category: 'Footwear',
-      colors: ['white', 'grey'],
-      tags: ['athleisure', 'retro', 'comfort'],
-      strength: 0.91,
-      velocity: 0.88,
-      affinity: 'Gen Z • Global',
-      engagement: 2860000,
-      platform: 'Hashtag views',
-      sparkline: [15, 18, 20, 23, 27, 31, 34, 37, 41, 48],
+      name: 'Pleated Maxi Skirts',
+      strength: 81,
+      velocity: 'steady',
+      affinity: 69,
+      history: [40, 42, 45, 49, 53, 55, 58, 62, 66, 70, 76, 81],
+      cohorts: ['Minimal Aesthetic', 'Pinterest Core'],
+      keywords: ['pleated', 'maxi', 'floaty', 'street style'],
+      category: 'bottoms',
+      palette: 'neutrals',
     },
     {
       id: 't4',
-      name: 'Crochet Texture Tops',
-      source: 'Runway SS',
-      category: 'Accessories',
-      colors: ['beige', 'cream'],
-      tags: ['boho', 'summer', 'handmade'],
-      strength: 0.64,
-      velocity: 0.52,
-      affinity: 'Gen X • NA',
-      engagement: 320000,
-      platform: 'IG engagements',
-      sparkline: [6, 7, 7, 9, 10, 11, 12, 13, 13, 14],
+      name: 'Chunky Loafers',
+      strength: 74,
+      velocity: 'steady',
+      affinity: 63,
+      history: [20, 28, 31, 36, 42, 50, 57, 61, 64, 68, 72, 74],
+      cohorts: ['Campus Chic', 'Casual Friday'],
+      keywords: ['loafers', 'chunky', 'platform', 'preppy'],
+      category: 'accessories',
+      palette: 'black',
     },
     {
       id: 't5',
-      name: 'Metallic Silver Skirts',
-      source: 'TikTok Sounds',
-      category: 'Dresses',
-      colors: ['silver', 'grey'],
-      tags: ['party', 'y2k', 'shine'],
-      strength: 0.74,
-      velocity: 0.69,
-      affinity: 'Gen Z • APAC',
-      engagement: 780000,
-      platform: 'TikTok views',
-      sparkline: [5, 7, 8, 9, 11, 14, 16, 18, 19, 21],
+      name: 'Athleisure Sets',
+      strength: 88,
+      velocity: 'fast',
+      affinity: 72,
+      history: [44, 48, 53, 59, 65, 70, 72, 75, 79, 83, 86, 88],
+      cohorts: ['Fitness Fashion', 'WFH Comfort'],
+      keywords: ['matching set', 'leggings', 'sports bra'],
+      category: 'activewear',
+      palette: 'pastels',
     },
   ];
 
   const products = [
     {
       id: 'p1',
-      name: 'Satin Maxi Dress – Crimson',
-      category: 'Dresses',
-      price: 129.0,
-      inventory: 12,
-      colors: ['crimson', 'red'],
-      styleTags: ['maxi', 'evening'],
-      image: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop',
-      aiDescription:
-        'All eyes on you. Fluid satin drape, floor-sweeping silhouette, and saturated cherry red designed to catch cameras and hearts.',
+      title: 'Blush Satin Slip Dress',
+      subtitle: 'Bias-cut midi • adjustable straps',
+      price: 129,
+      stock: 12,
+      rating: 4.7,
+      tags: ['satin', 'occasion', 'rose'],
+      category: 'dresses',
+      palette: 'rose',
+      image:
+        'https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=2070&auto=format&fit=crop',
     },
     {
       id: 'p2',
-      name: 'Oversized Tailored Blazer – Black',
-      category: 'Outerwear',
-      price: 159.0,
-      inventory: 6,
-      colors: ['black'],
-      styleTags: ['tailored', '90s'],
-      image: 'https://images.unsplash.com/photo-1717853098335-0a53927d6541?ixid=M3w3OTkxMTl8MHwxfHNlYXJjaHwxfHxTdW4tY2hhc2luZyUyMHRleHR1cmUlMjB3aXRoJTIwYXJ0aXNhbmFsfGVufDB8MHx8fDE3NjE1Nzk3OTN8MA&ixlib=rb-4.1.0&w=1600&auto=format&fit=crop&q=80',
-      aiDescription:
-        'Boxy shoulders, sharp lapels. Dress it up or down—the new power layer for desk-to-dusk uniform dressing.',
+      title: 'Cream Cropped Blazer',
+      subtitle: 'Tailored fit • soft shoulder',
+      price: 159,
+      stock: 8,
+      rating: 4.5,
+      tags: ['blazer', 'office', 'neutral'],
+      category: 'outerwear',
+      palette: 'neutrals',
+      image:
+        'https://images.unsplash.com/photo-1613985542324-3f7dd1e26caa?q=80&w=1920&auto=format&fit=crop',
     },
     {
       id: 'p3',
-      name: 'Retro Chunky Sneakers – Cloud',
-      category: 'Footwear',
-      price: 98.0,
-      inventory: 18,
-      colors: ['white', 'grey'],
-      styleTags: ['retro', 'athleisure', 'comfort'],
-      image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1600&auto=format&fit=crop',
-      aiDescription:
-        'Elevated cushioning and throwback lines. Built for endless city miles with cloud-soft steps.',
+      title: 'Pleated Maxi Skirt',
+      subtitle: 'Lightweight chiffon • ankle length',
+      price: 99,
+      stock: 5,
+      rating: 4.6,
+      tags: ['pleated', 'maxi', 'floaty'],
+      category: 'bottoms',
+      palette: 'neutrals',
+      image:
+        'https://images.unsplash.com/photo-1542326237-94b1c5a538d4?q=80&w=1920&auto=format&fit=crop',
     },
     {
       id: 'p4',
-      name: 'Metallic Pleated Skirt – Silver',
-      category: 'Dresses',
-      price: 89.0,
-      inventory: 3,
-      colors: ['silver'],
-      styleTags: ['party', 'y2k'],
-      image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=1600&auto=format&fit=crop',
-      aiDescription:
-        'Shine on: liquid-metal pleats sway with every step. A statement piece tailor-made for night energy.',
+      title: 'Black Chunky Loafers',
+      subtitle: 'Platform sole • leather',
+      price: 139,
+      stock: 20,
+      rating: 4.4,
+      tags: ['loafers', 'platform', 'preppy'],
+      category: 'accessories',
+      palette: 'black',
+      image:
+        'https://images.unsplash.com/photo-1543326727-cf6c39e8f84b?q=80&w=1920&auto=format&fit=crop',
     },
     {
       id: 'p5',
-      name: 'Crochet Open-Knit Tank – Oat',
-      category: 'Accessories',
-      price: 54.0,
-      inventory: 10,
-      colors: ['cream', 'beige'],
-      styleTags: ['boho', 'summer', 'handmade'],
-      image: 'https://images.unsplash.com/photo-1717853098335-0a53927d6541?ixid=M3w3OTkxMTl8MHwxfHNlYXJjaHwxfHxTdW4tY2hhc2luZyUyMHRleHR1cmUlMjB3aXRoJTIwYXJ0aXNhbmFsfGVufDB8MHx8fDE3NjE1Nzk3OTN8MA&ixlib=rb-4.1.0&w=1600&auto=format&fit=crop&q=80',
-      aiDescription:
-        'Sun-chasing texture with artisanal charm. Layer it over swim or pair with denim for effortless summer styling.',
+      title: 'Powder Blue Athleisure Set',
+      subtitle: 'Seamless rib • matching top & bottom',
+      price: 89,
+      stock: 15,
+      rating: 4.8,
+      tags: ['set', 'athleisure', 'pastel'],
+      category: 'activewear',
+      palette: 'pastels',
+      image:
+        'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1920&auto=format&fit=crop',
+    },
+    {
+      id: 'p6',
+      title: 'Rosé Wrap Dress',
+      subtitle: 'Flowy georgette • V neckline',
+      price: 119,
+      stock: 9,
+      rating: 4.6,
+      tags: ['wrap', 'romantic', 'rose'],
+      category: 'dresses',
+      palette: 'rose',
+      image:
+        'https://images.unsplash.com/photo-1520974735194-5f5731b8117a?q=80&w=1920&auto=format&fit=crop',
+    },
+    {
+      id: 'p7',
+      title: 'Sculpt Knit Tank',
+      subtitle: 'Contour fit • breathable',
+      price: 49,
+      stock: 30,
+      rating: 4.3,
+      tags: ['top', 'basics', 'neutral'],
+      category: 'tops',
+      palette: 'neutrals',
+      image:
+        'https://images.unsplash.com/photo-1487412912498-0447578fcca8?q=80&w=1920&auto=format&fit=crop',
+    },
+    {
+      id: 'p8',
+      title: 'Tailored Wide-Leg Trousers',
+      subtitle: 'High rise • crease-resistant',
+      price: 129,
+      stock: 11,
+      rating: 4.7,
+      tags: ['tailored', 'wide-leg', 'office'],
+      category: 'bottoms',
+      palette: 'neutrals',
+      image:
+        'https://images.unsplash.com/photo-1509635022445-cb970685bde4?q=80&w=1920&auto=format&fit=crop',
+    },
+    {
+      id: 'p9',
+      title: 'Cropped Tweed Jacket',
+      subtitle: 'Textured weave • gold-tone buttons',
+      price: 179,
+      stock: 6,
+      rating: 4.6,
+      tags: ['tweed', 'outerwear', 'parisian'],
+      category: 'outerwear',
+      palette: 'neutrals',
+      image:
+        'https://images.unsplash.com/photo-1520974779573-1b1e9a5f975a?q=80&w=1920&auto=format&fit=crop',
+    },
+    {
+      id: 'p10',
+      title: 'Petal Pink Cardigan',
+      subtitle: 'Soft knit • pearl buttons',
+      price: 79,
+      stock: 18,
+      rating: 4.5,
+      tags: ['knit', 'pastel', 'cozy'],
+      category: 'tops',
+      palette: 'blush',
+      image:
+        'https://images.unsplash.com/photo-1511162843015-4f8d13f3ec95?q=80&w=1920&auto=format&fit=crop',
+    },
+    {
+      id: 'p11',
+      title: 'Butter Satin Shirt',
+      subtitle: 'Relaxed fit • luminous finish',
+      price: 89,
+      stock: 13,
+      rating: 4.4,
+      tags: ['satin', 'tops', 'butter'],
+      category: 'tops',
+      palette: 'neutrals',
+      image:
+        'https://images.unsplash.com/photo-1613553490395-2ff86d6d1f6d?q=80&w=1920&auto=format&fit=crop',
+    },
+    {
+      id: 'p12',
+      title: 'Minimal Belt Bag',
+      subtitle: 'Vegan leather • adjustable strap',
+      price: 59,
+      stock: 40,
+      rating: 4.2,
+      tags: ['accessory', 'belt bag', 'street'],
+      category: 'accessories',
+      palette: 'black',
+      image:
+        'https://images.unsplash.com/photo-1593034138715-1f2057b5e124?q=80&w=1920&auto=format&fit=crop',
     },
   ];
 
@@ -146,37 +232,42 @@ function useDemoData() {
 
 export default function App() {
   const { trends, products } = useDemoData();
-  const [filters, setFilters] = useState({ category: 'All', demographic: 'All', period: '30d' });
+  const [filters, setFilters] = useState({ timeframe: 'Last 30 days', category: 'all', palette: 'all' });
+  const recRef = useRef(null);
+  const trendRef = useRef(null);
 
   const filteredTrends = useMemo(() => {
-    return trends.filter((t) => {
-      const byCategory = filters.category === 'All' || t.category === filters.category;
-      const byDemo = filters.demographic === 'All' || t.affinity.toLowerCase().includes(filters.demographic.toLowerCase());
-      return byCategory && byDemo;
-    });
+    return trends.filter((t) => (filters.category === 'all' ? true : t.category === filters.category) && (filters.palette === 'all' ? true : t.palette === filters.palette));
   }, [trends, filters]);
 
+  const filteredProducts = useMemo(() => {
+    return products.filter((p) => (filters.category === 'all' ? true : p.category === filters.category) && (filters.palette === 'all' ? true : p.palette === filters.palette));
+  }, [products, filters]);
+
+  const handleAdd = (p) => {
+    alert(`Added to cart: ${p.title}`);
+  };
+
+  const scrollToTrends = () => trendRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const scrollToProducts = () => recRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-rose-50 via-pink-50 to-white text-rose-950">
-      <div className="mx-auto max-w-6xl px-6 py-6">
-        <HeroCover />
+    <div className="min-h-screen bg-gradient-to-b from-rose-50 via-rose-50/60 to-rose-100 text-rose-900">
+      <div className="mx-auto max-w-6xl px-4 md:px-6 py-6 md:py-8">
+        <HeroCover onExploreTrends={scrollToTrends} onShopMatches={scrollToProducts} />
 
-        <FiltersBar filters={filters} setFilters={setFilters} />
+        <div className="mt-6" ref={trendRef}>
+          <FiltersBar filters={filters} setFilters={setFilters} />
+        </div>
 
-        <section className="mt-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-semibold text-rose-900">Trending Now</h2>
-              <p className="text-sm text-rose-600/80">Runway drops, TikTok surges, and influencer looks scored by popularity and momentum.</p>
-            </div>
-          </div>
-          <TrendsGrid trends={filteredTrends} />
-        </section>
+        <TrendsGrid trends={filteredTrends} />
 
-        <Recommendations trends={filteredTrends} products={products} />
+        <div ref={recRef}>
+          <Recommendations products={filteredProducts} onAdd={handleAdd} />
+        </div>
 
-        <footer className="mt-16 rounded-2xl border border-rose-100 bg-white p-6 text-center text-sm text-rose-600/90 shadow-sm">
-          Crafted for feminine fashion brands—warm tones, elegant details, and insight-led shopping.
+        <footer className="mt-14 text-center text-sm text-rose-700/70">
+          <p>Designed for modern clothing brands • Real-time insights and curated assortments</p>
         </footer>
       </div>
     </div>
