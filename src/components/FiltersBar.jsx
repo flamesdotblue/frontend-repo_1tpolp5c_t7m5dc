@@ -7,18 +7,18 @@ export default function FiltersBar({ filters, setFilters }) {
   const periods = ['7d', '30d', '90d'];
 
   return (
-    <div className="mt-8 w-full rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
+    <div className="mt-10 w-full rounded-2xl border border-rose-100 bg-white/80 p-5 shadow-sm backdrop-blur">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div className="flex items-center gap-2 text-neutral-600">
+        <div className="flex items-center gap-2 text-rose-700">
           <Filter className="h-5 w-5" />
-          <span className="font-medium">Filter trends</span>
+          <span className="font-medium">Refine trends</span>
         </div>
 
         <div className="grid w-full grid-cols-1 gap-3 md:w-auto md:grid-cols-3">
           <div className="flex items-center gap-2">
-            <label className="min-w-[92px] text-sm text-neutral-500">Category</label>
+            <label className="min-w-[92px] text-sm text-rose-600">Category</label>
             <select
-              className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/10 md:w-48"
+              className="w-full rounded-full border border-rose-200 bg-white px-4 py-2 text-sm text-rose-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-200 md:w-48"
               value={filters.category}
               onChange={(e) => setFilters((f) => ({ ...f, category: e.target.value }))}
             >
@@ -31,9 +31,9 @@ export default function FiltersBar({ filters, setFilters }) {
           </div>
 
           <div className="flex items-center gap-2">
-            <label className="min-w-[92px] text-sm text-neutral-500 flex items-center gap-1"><Users className="h-4 w-4"/>Demographic</label>
+            <label className="min-w-[92px] text-sm text-rose-600 flex items-center gap-1"><Users className="h-4 w-4"/>Demographic</label>
             <select
-              className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/10 md:w-48"
+              className="w-full rounded-full border border-rose-200 bg-white px-4 py-2 text-sm text-rose-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-200 md:w-48"
               value={filters.demographic}
               onChange={(e) => setFilters((f) => ({ ...f, demographic: e.target.value }))}
             >
@@ -46,9 +46,9 @@ export default function FiltersBar({ filters, setFilters }) {
           </div>
 
           <div className="flex items-center gap-2">
-            <label className="min-w-[92px] text-sm text-neutral-500 flex items-center gap-1"><Calendar className="h-4 w-4"/>Period</label>
+            <label className="min-w-[92px] text-sm text-rose-600 flex items-center gap-1"><Calendar className="h-4 w-4"/>Period</label>
             <select
-              className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/10 md:w-48"
+              className="w-full rounded-full border border-rose-200 bg-white px-4 py-2 text-sm text-rose-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-200 md:w-48"
               value={filters.period}
               onChange={(e) => setFilters((f) => ({ ...f, period: e.target.value }))}
             >

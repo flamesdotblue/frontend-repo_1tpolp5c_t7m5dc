@@ -5,7 +5,6 @@ import TrendsGrid from './components/TrendsGrid';
 import Recommendations from './components/Recommendations';
 
 function useDemoData() {
-  // Demo trends: runway + TikTok + influencer aggregates
   const trends = [
     {
       id: 't1',
@@ -153,13 +152,12 @@ export default function App() {
     return trends.filter((t) => {
       const byCategory = filters.category === 'All' || t.category === filters.category;
       const byDemo = filters.demographic === 'All' || t.affinity.toLowerCase().includes(filters.demographic.toLowerCase());
-      // period is demo-only in this static build; you could tie it to sparkline length later
       return byCategory && byDemo;
     });
   }, [trends, filters]);
 
   return (
-    <div className="min-h-screen bg-neutral-50 text-neutral-900">
+    <div className="min-h-screen bg-gradient-to-b from-rose-50 via-pink-50 to-white text-rose-950">
       <div className="mx-auto max-w-6xl px-6 py-6">
         <HeroCover />
 
@@ -168,8 +166,8 @@ export default function App() {
         <section className="mt-8">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-semibold">Trending Now</h2>
-              <p className="text-sm text-neutral-500">Runway drops, TikTok surges, and influencer looks scored by popularity and momentum.</p>
+              <h2 className="text-2xl font-semibold text-rose-900">Trending Now</h2>
+              <p className="text-sm text-rose-600/80">Runway drops, TikTok surges, and influencer looks scored by popularity and momentum.</p>
             </div>
           </div>
           <TrendsGrid trends={filteredTrends} />
@@ -177,8 +175,8 @@ export default function App() {
 
         <Recommendations trends={filteredTrends} products={products} />
 
-        <footer className="mt-16 border-t border-neutral-200 py-8 text-center text-sm text-neutral-500">
-          Built with an immersive 3D cover and a clean dashboard aesthetic.
+        <footer className="mt-16 rounded-2xl border border-rose-100 bg-white p-6 text-center text-sm text-rose-600/90 shadow-sm">
+          Crafted for feminine fashion brands—warm tones, elegant details, and insight-led shopping.
         </footer>
       </div>
     </div>
